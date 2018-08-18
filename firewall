@@ -1,0 +1,32 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:		firewall
+# Required-Start:	$all
+# Required-Stop:	$all
+# Default-Start:	2 3 4 5
+# Default-Stop:		0 1 6
+### END INIT INFO
+
+intLocal="enp0s3"
+intPublica="enp0s8"
+
+case $1 in
+	start)
+		echo 1 > /proc/sys/net/ipv4/ip_forward
+		iptables -t nat -A POSTROUTING -o $intPublica -j MASQUERADE
+		;;
+	stop)
+		echo 0 > /proc/sys/net/ipv4/ip_forward
+		iptables -t nat -D POSTROUTING -o $intPublica -j MASQUERADE
+		;;
+	restart)
+		$0 stop
+		$0 start
+		;;
+	#status)
+	#	status anacron 
+	*)
+		echo 
+		echo "Use start|stop|restart|status"
+		echo
+esac
