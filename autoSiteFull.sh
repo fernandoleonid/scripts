@@ -62,9 +62,6 @@ function criarUsuario (){
 }
 
 
-function msg () {
-	echo $1
-}
 
 for linha in $(cat dominios.txt) 
 do
